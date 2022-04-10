@@ -1,0 +1,71 @@
+﻿@using PardavimoAutomatai.Models;
+@{
+
+    ViewBag.Title = "View";
+}
+
+<h2>View</h2>
+<table class="table table-striped datatable">
+    <tr>
+        <td><b>ID</b></td>
+        <td><b>SlotCount</b></td>
+        <td><b>Model</b></td>
+        <td><b>State</b></td>
+        <td><b>Location</b></td>
+        <td></td>
+        <td></td>
+    </tr>
+    @foreach (VendorNeedUnit vendor in (List<VendorNeedUnit>)Session["List"])
+    {
+        <tr>
+            <td>
+                @vendor.id
+            </td>
+            <td>
+                @vendor.slotCount
+            </td>
+            <td>
+                @vendor.model
+            </td>
+            <td>
+                @vendor.state
+            </td>
+            <td>
+                @vendor.location
+            </td>
+            <td>
+                <form action="CreateShipment">
+                    <input type="hidden" name="vendorID" value="@vendor.id"/>
+                    <input type="submit" value="Create Shipment" />
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td><b>Name</b></td>
+            <td><b>Product</b></td>
+            <td><b>Need</b></td>
+            <td><b>Left</b></td>
+            <td></td>
+        </tr>
+        foreach (VendorNeedUnitSlot slot in vendor.slots)
+        {
+        <tr>
+            <td></td>
+            <td>
+                @slot.name
+            </td>
+            <td>
+                @slot.product
+            </td>
+            <td>
+                @slot.need
+            </td>
+            <td>
+                @slot.left
+            </td>
+            <td></td>
+        </tr>
+        }
+    }
+</table>
