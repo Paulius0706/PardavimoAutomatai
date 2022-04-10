@@ -1,5 +1,14 @@
-﻿@{
+﻿
+@{
     ViewBag.Title = "Home Page";
+}
+@{
+    // check if user is logged in
+    //
+    if (Session["userid"] == null)
+    {
+        Response.Redirect("~/Login/CreateWindow");
+    }
 }
 
 <div class="jumbotron">

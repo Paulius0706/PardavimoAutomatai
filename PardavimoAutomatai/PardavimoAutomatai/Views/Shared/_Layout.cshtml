@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -6,6 +8,15 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
+
+    <script>
+        function logout() {
+            if (confirm("Are you sure you want to logout?")) {
+                window.location.replace("/Home/RequestLogoutUser");
+            } else {
+            }
+        }
+    </script>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -18,15 +29,33 @@
                 </button>
                 @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-            </div>
+
+            @{
+                if (!Request.RawUrl.Equals("/Login/Login"))
+                {
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav navbar-nav">
+                            <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                            @if (Session["userrole"].Equals("0"))
+                            {
+                                <li>@Html.ActionLink("All accounts", "CreateAllAccountsWindow", "Account")</li>
+                            }
+                            <li>@Html.ActionLink("Account settings", "CreateWindow", "Account")</li>
+                            <li><a onclick="logout()">Logout</a></li>
+                        </ul>
+                    </div>
+                }
+            }
         </div>
     </div>
+    @{
+        if (Session["layout_popup"] != null)
+        {
+            <p style="color: blue; font-size: 25px">@Html.Raw(Session["layout_popup"].ToString())</p>
+            Session["layout_popup"] = null;
+        }
+    }
+
     <div class="container body-content">
         @RenderBody()
         <hr />
@@ -35,7 +64,10 @@
         </footer>
     </div>
 
+
     @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/Scripts/jquery.validate.min.js")
+    @Scripts.Render("~/Scripts/jquery.validate.unobtrusive.min.js")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 </body>

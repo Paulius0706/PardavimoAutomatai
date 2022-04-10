@@ -1,0 +1,100 @@
+﻿@model IEnumerable<PardavimoAutomatai.Models.User>
+
+@{
+    ViewBag.Title = "All Accounts";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    // check if user is logged in
+    //
+    if (Session["userid"] == null)
+    {
+        Response.Redirect("~/Login/CreateWindow");
+    }
+}
+
+<h2>All Accounts</h2>
+
+<p>
+    @Html.ActionLink("New account", "CreateRegisterWindow", "Account", new { @class = "btn btn-success" })
+</p>
+<table class="table table-striped datatable">
+    <thead>
+        <tr style="background-color: lightblue">
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Surname)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.LoginName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Phone)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Email)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Role)
+            </th>
+
+            <th style="width: 18%"></th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <th>
+                    @Html.Raw(item.Id)
+                </th>
+                <th>
+                    @Html.Raw(item.Name)
+                </th>
+                <th>
+                    @Html.Raw(item.Surname)
+                </th>
+                <th>
+                    @Html.Raw(item.LoginName)
+                </th>
+                <th>
+                    @Html.Raw(item.Phone)
+                </th>
+                <th>
+                    @Html.Raw(item.Email)
+                </th>
+                <th>
+                    @{
+                        if (item.Role == 0)
+                        {
+                            @Html.Raw("Administrator");
+                        }
+                        else if (item.Role == 1)
+                        {
+                            @Html.Raw("Supplier");
+                        }
+                    }
+                </th>
+                <td>
+                    <!--Html.ActionLink("Šalinti", "Delete", new { id = item.Id }, new { class = "btn btn-danger action" })-->
+                    <button style="color: red" onclick="deletion(@item.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<script>
+    function deletion(id) {
+        if (confirm("Are you sure you want to delete this account?")) {
+            window.location.replace("/Account/DeleteAccount?id=" + id);
+        } else {
+        }
+    }
+</script>

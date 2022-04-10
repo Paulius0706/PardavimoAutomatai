@@ -1,0 +1,83 @@
+﻿@model PardavimoAutomatai.Models.User
+
+@{
+    ViewBag.Title = "Register window";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+@{
+    // check if user is logged in
+    //
+    if (Session["userid"] == null)
+    {
+        Response.Redirect("~/Login/CreateWindow");
+    }
+}
+<h1>Please fill out the register </h1>
+
+@{
+    // variables
+
+    List<string> roles = new List<string>();
+    roles.Add("Administrator");
+    roles.Add("Supplier");
+    SelectList rolesSelectList = new SelectList(roles);
+
+    string selectedRole = "";
+    string confirmPassword = "";
+}
+
+
+
+@using (Html.BeginForm("CreateAccount", "Account", new { user = Model, role = selectedRole, confirmPassword = confirmPassword }))
+{
+    <table>
+        <tr>
+            <td>Role: </td>
+            <td>@Html.DropDownListFor(m => selectedRole, rolesSelectList)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Name)</td>
+            <td>@Html.TextBoxFor(m => m.Name, new { style = "height: 25px" })</td>
+            <td>@Html.ValidationMessageFor(m => m.Name)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Surname)</td>
+            <td>@Html.TextBoxFor(m => m.Surname, new { style = "height: 25px" })</td>
+            <td>@Html.ValidationMessageFor(m => m.Surname)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.LoginName)</td>
+            <td>@Html.TextBoxFor(m => m.LoginName, new { style = "height: 25px" })</td>
+            <td>@Html.ValidationMessageFor(m => m.LoginName)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Password)</td>
+            <td>@Html.PasswordFor(m => m.Password, new { style = "height: 25px" })</td>
+            <td>@Html.ValidationMessageFor(m => m.Password)</td>
+        </tr>
+        <tr>
+            <td>Confirm password: </td>
+            <td>@Html.PasswordFor(m => confirmPassword, new { style = "height: 25px" })</td>
+            @if (Session["reg_confirmPasswordError"] == null)
+            {
+                Session["reg_confirmPasswordError"] = "";
+            }
+            <td>@Html.Label(Session["reg_confirmPasswordError"].ToString())</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Phone)</td>
+            <td>@Html.TextBoxFor(m => m.Phone, new { style = "height: 25px" })</td>
+            <td>@Html.ValidationMessageFor(m => m.Phone)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(m => m.Email)</td>
+            <td>@Html.TextBoxFor(m => m.Email, new { style = "height: 25px" })</td>
+            <td>@Html.ValidationMessageFor(m => m.Email)</td>
+        </tr>
+        <!--<tr>-->
+        <!--<td colspan="2"><input type="submit" value="Register" /></td>-->
+        <!--</tr>-->
+    </table>
+    <input type="submit" value="Register" />
+}
